@@ -1,0 +1,65 @@
+
+> math-tutor@0.1.0 dev
+> concurrently "vite" "node --env-file=.env server/index.js"
+
+[1] API server running on http://localhost:3001
+[0] 
+[0]   [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m570[22m[2m[0m ms[22m
+[0] 
+[0]   [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5173[22m/[39m
+[0] [2m  [32m➜[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
+[0] [2m17:04:53[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/ExercisePanel.tsx[22m
+[0] [2m17:04:53[22m [36m[1m[vite][22m[39m [32m✨ new dependencies optimized: [33mkatex[32m[39m
+[0] [2m17:04:53[22m [36m[1m[vite][22m[39m [32m✨ optimized dependencies changed. reloading[39m
+[0] [2m17:04:56[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/ExercisePanel.tsx[22m
+[0] [2m17:05:38[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.css[22m
+[0] [2m17:05:42[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/ExercisePanel.tsx[22m
+[1] Hints error: SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+[1]     at JSON.parse (<anonymous>)
+[1]     at file:///C:/Users/48604/math-tutor/server/index.js:208:25
+[1]     at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[1] Hints error: Error: Rate limit reached for model `meta-llama/llama-4-scout-17b-16e-instruct` in organization `org_01kst9fk0afb28rz22q63kbr7s` service tier `on_demand` on tokens per day (TPD): Limit 500000, Used 496534, Requested 3790. Please try again in 55.9872s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+[1]     at callGroq (file:///C:/Users/48604/math-tutor/server/index.js:30:25)
+[1]     at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[1]     at async file:///C:/Users/48604/math-tutor/server/index.js:196:20
+[0] [2m17:15:11[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m17:15:16[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m17:15:24[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m17:15:53[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m17:49:14[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m18:17:08[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m18:17:17[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m18:17:23[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m18:17:28[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m18:20:05[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m18:25:49[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m18:26:09[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m18:27:42[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m18:28:35[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m19:40:19[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m19:44:11[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m19:44:17[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m19:44:23[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m19:53:10[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m19:53:18[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m19:53:26[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m19:53:33[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m19:53:46[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.css[22m
+[0] [2m20:01:49[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m20:11:05[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m20:11:14[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m20:11:31[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m20:11:39[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m16:17:38[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m16:17:39[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m16:17:40[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m16:17:42[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m16:17:44[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m16:17:46[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m16:17:47[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m16:17:49[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m16:17:50[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m16:17:51[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m16:17:51[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m16:17:53[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m
+[0] [2m16:17:53[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/CustomMode.tsx[22m

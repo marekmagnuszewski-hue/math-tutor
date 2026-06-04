@@ -1,0 +1,62 @@
+[
+  {
+    "id": "matematyka-2025-maj-matura-rozszerzona-t1",
+    "source": "CKE maj 2025",
+    "taskImage": "/exercises/highschool/matematyka-2025-maj-matura-rozszerzona-p4-t1.jpg",
+    "pageImage": "/exercises/highschool/matematyka-2025-maj-matura-rozszerzona-p4.jpg",
+    "taskNr": 1,
+    "answer": "25%",
+    "topic": "Matura rozszerzona · CKE maj 2025",
+    "points": 1
+  },
+  {
+    "id": "matematyka-2025-maj-matura-rozszerzona-t2",
+    "source": "CKE maj 2025",
+    "taskImage": "/exercises/highschool/matematyka-2025-maj-matura-rozszerzona-p5-t2.jpg",
+    "pageImage": "/exercises/highschool/matematyka-2025-maj-matura-rozszerzona-p5.jpg",
+    "taskNr": 2,
+    "answer": "(a - 2b)^2 (a + 2b) > 0",
+    "topic": "Matura rozszerzona · CKE maj 2025",
+    "points": 1
+  },
+  {
+    "id": "matematyka-2025-maj-matura-rozszerzona-t3",
+    "source": "CKE maj 2025",
+    "taskImage": "/exercises/highschool/matematyka-2025-maj-matura-rozszerzona-p6-t3.jpg",
+    "pageImage": "/exercises/highschool/matematyka-2025-maj-matura-rozszerzona-p6.jpg",
+    "taskNr": 3,
+    "answer": "45°",
+    "topic": "Matura rozszerzona · CKE maj 2025",
+    "points": 1
+  },
+  {
+    "id": "matematyka-2025-maj-matura-rozszerzona-t4",
+    "source": "CKE maj 2025",
+    "taskImage": "/exercises/highschool/matematyka-2025-maj-matura-rozszerzona-p8-t4.jpg",
+    "pageImage": "/exercises/highschool/matematyka-2025-maj-matura-rozszerzona-p8.jpg",
+    "taskNr": 4,
+    "answer": "9/25",
+    "topic": "Matura rozszerzona · CKE maj 2025",
+    "points": 1
+  },
+  {
+    "id": "matematyka-2025-maj-matura-rozszerzona-t5",
+    "source": "CKE maj 2025",
+    "taskImage": "/exercises/highschool/matematyka-2025-maj-matura-rozszerzona-p10-t5.jpg",
+    "pageImage": "/exercises/highschool/matematyka-2025-maj-matura-rozszerzona-p10.jpg",
+    "taskNr": 5,
+    "answer": "x ∈ (−∞, −10) ∪ (−2/3, +∞)",
+    "topic": "Matura rozszerzona · CKE maj 2025",
+    "points": 1
+  },
+  {
+    "id": "matematyka-2025-maj-matura-rozszerzona-t6",
+    "source": "CKE maj 2025",
+    "taskImage": "/exercises/highschool/matematyka-2025-maj-matura-rozszerzona-p12-t6.jpg",
+    "pageImage": "/exercises/highschool/matematyka-2025-maj-matura-rozszerzona-p12.jpg",
+    "taskNr": 6,
+    "answer": "27/2 lub 27",
+    "topic": "Matura rozszerzona · CKE maj 2025",
+    "points": 1
+  }
+]
