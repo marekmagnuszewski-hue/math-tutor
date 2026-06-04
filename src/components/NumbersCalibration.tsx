@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import DrawingCanvas, { type CanvasHandle } from './DrawingCanvas'
 import { saveTrainingEntry } from '../lib/trainingData'
+import { apiUrl } from '../lib/api'
 
 // 3 full rounds: 0-9, 0-9, 0-9
 const STEPS = Array.from({ length: 30 }, (_, i) => i % 10)
@@ -35,7 +36,7 @@ export default function NumbersCalibration({ onComplete, onBack }: Props) {
 
     setLoading(true)
     try {
-      const res = await fetch('/api/recognize', {
+      const res = await fetch(apiUrl('/api/recognize'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: img, mode: 'number' }),

@@ -1,4 +1,5 @@
 import { useRef, useState, useCallback } from 'react'
+import { apiUrl } from './lib/api'
 import DrawingCanvas, { type CanvasHandle } from './components/DrawingCanvas'
 import ExercisePanel from './components/ExercisePanel'
 import NumbersCalibration from './components/NumbersCalibration'
@@ -111,7 +112,7 @@ function BasicMode({ onHome }: { onHome: () => void }) {
     const img = canvasRef.current?.getImageBase64()
     if (!img) return { correct: null, recognized: null }
     try {
-      const recRes = await fetch('/api/recognize', {
+      const recRes = await fetch(apiUrl('/api/recognize'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: img, hints: buildHintsText(), mode: 'number' }),
@@ -120,7 +121,7 @@ function BasicMode({ onHome }: { onHome: () => void }) {
       const recData = await recRes.json()
       const userLatex = recData.latex?.trim() ?? null
       if (!userLatex) return { correct: null, recognized: null }
-      const checkRes = await fetch('/api/check', {
+      const checkRes = await fetch(apiUrl('/api/check'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userAnswer: userLatex, correctAnswer: exercise.answer }),

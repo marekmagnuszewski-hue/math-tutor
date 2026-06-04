@@ -6,6 +6,7 @@ import { buildHintsText } from '../lib/trainingData'
 import { getExercises, addExercise, removeExercise, type CustomExercise } from '../lib/customExercises'
 import { getBuiltinExercises, getBuiltinCount, getBuiltinGroups } from '../lib/builtinExercises'
 import type { Exercise } from '../lib/exerciseGenerator'
+import { apiUrl } from '../lib/api'
 
 function renderMixed(text: string): string {
   return text.split(/(\$[^$]+\$)/).map(part => {
@@ -279,7 +280,7 @@ function PracticeView({
     if (!img) return { correct: null, recognized: null }
     try {
       const isNumeric = /^\d+$/.test(exercise.answer.trim())
-      const recRes = await fetch('/api/recognize', {
+      const recRes = await fetch(apiUrl('/api/recognize'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: img, hints: buildHintsText(), mode: isNumeric ? 'number' : 'expression' }),
@@ -288,7 +289,7 @@ function PracticeView({
       const recData = await recRes.json()
       const userLatex = recData.latex?.trim() ?? null
       if (!userLatex) return { correct: null, recognized: null }
-      const checkRes = await fetch('/api/check', {
+      const checkRes = await fetch(apiUrl('/api/check'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userAnswer: userLatex, correctAnswer: exercise.answer }),
@@ -309,7 +310,7 @@ function PracticeView({
     const imageForHints = (exercise as any).pageImage ?? exercise.questionImage
     if (!imageForHints) return [exercise.hint]
     try {
-      const res = await fetch('/api/hints', {
+      const res = await fetch(apiUrl('/api/hints'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import DrawingCanvas, { type CanvasHandle } from './DrawingCanvas'
 import { TRAINING_STEPS, saveTrainingEntry } from '../lib/trainingData'
+import { apiUrl } from '../lib/api'
 
 interface Props {
   onComplete: () => void
@@ -33,7 +34,7 @@ export default function TrainingMode({ onComplete }: Props) {
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch('/api/recognize', {
+      const res = await fetch(apiUrl('/api/recognize'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: img }),

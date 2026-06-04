@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import { buildHintsText } from '../lib/trainingData'
+import { apiUrl } from '../lib/api'
 
 interface RecognitionResult {
   latex: string
@@ -32,7 +33,7 @@ export function useMathRecognition() {
     setResult(null)
 
     try {
-      const res = await fetch('/api/recognize', {
+      const res = await fetch(apiUrl('/api/recognize'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: imageBase64, hints: buildHintsText() }),
