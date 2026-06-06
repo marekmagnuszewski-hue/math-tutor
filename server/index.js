@@ -55,16 +55,17 @@ function extractNumber(text) {
 
 // ── POST /api/recognize ───────────────────────────────────────────────────────
 app.post('/api/recognize', async (req, res) => {
-  const { image, hints, mode } = req.body
+  const { image, hints, mode, taskText } = req.body
   if (!image) return res.status(400).json({ error: 'No image provided' })
 
   const correctionBlock = hints ? `Digit corrections for this user:\n${hints}\n\n` : ''
+  const contextBlock = taskText ? `The math problem is: ${taskText}\n` : ''
   const promptText = mode === 'number'
-    ? `${correctionBlock}What integer is written in this image? It is between 0 and 81.
+    ? `${correctionBlock}${contextBlock}What integer is written in this image? It is between 0 and 81.
 Reply with the digits ONLY — no words, no spaces, no punctuation.
 If you see a stroke that looks like l or I, it is the digit 1.
 Notes: 7 with a crossbar = 7. Open oval = 0. 6 with long tail = 6.`
-    : `${correctionBlock}Handwritten math expression in the image. Return ONLY the LaTeX, nothing else.`
+    : `${correctionBlock}${contextBlock}Handwritten math expression in the image. Return ONLY the LaTeX, nothing else.`
 
   try {
     const { mediaType, data } = parseDataUrl(image)
