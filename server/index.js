@@ -11,44 +11,45 @@ app.use(cors())
 app.use(express.json({ limit: '10mb' }))
 
 const PORT = process.env.PORT ?? 3001
-const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions'
+const ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages'
 
-async function callGroq(messages, model = 'llama-3.3-70b-versatile', maxTokens = 512) {
-  const apiKey = process.env.GROQ_API_KEY
-  if (!apiKey) throw new Error('GROQ_API_KEY not configured in .env')
-
-  const response = await fetch(GROQ_URL, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ model, messages, max_tokens: maxTokens }),
-  })
-
-  const data = await response.json()
-  if (data.error) throw new Error(data.error.message || 'Groq API error')
-  return data.choices?.[0]?.message?.content ?? ''
+function getApiKey() {
+  const key = process.env.ANTHROPIC_API_KEY
+  if (!key) throw new Error('ANTHROPIC_API_KEY not configured in .env')
+  return key
 }
 
-// Extract just the digit(s) from a possibly verbose model response
+// Parse a data URL into { mediaType, data } for Anthropic image blocks
+function parseDataUrl(dataUrl) {
+  const match = dataUrl.match(/^data:(image\/[a-zA-Z+]+);base64,(.+)$/)
+  if (!match) throw new Error('Invalid image data URL')
+  return { mediaType: match[1], data: match[2] }
+}
+
+async function callClaude(messages, model = 'claude-haiku-4-5-20251001', maxTokens = 512) {
+  const response = await fetch(ANTHROPIC_URL, {
+    method: 'POST',
+    headers: {
+      'x-api-key': getApiKey(),
+      'anthropic-version': '2023-06-01',
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({ model, max_tokens: maxTokens, messages }),
+  })
+  const data = await response.json()
+  if (data.error) throw new Error(data.error.message || 'Anthropic API error')
+  return data.content?.[0]?.text ?? ''
+}
+
 function extractNumber(text) {
   const t = text.trim()
-  if (/^\d+$/.test(t)) return t                        // already clean: "7"
-
-  // Try word-boundary match first (handles "The answer is 12")
+  if (/^\d+$/.test(t)) return t
   const matches = t.match(/\b\d+\b/g)
   if (matches) return matches[matches.length - 1]
-
-  // Normalize common OCR letter↔digit confusions, then retry
-  // l / I / | → 1    O / o → 0    (most frequent misreads for these digits)
-  const norm = t
-    .replace(/[lI|]/g, '1')
-    .replace(/[Oo]/g, '0')
+  const norm = t.replace(/[lI|]/g, '1').replace(/[Oo]/g, '0')
   if (/^\d+$/.test(norm)) return norm
   const normMatches = norm.match(/\d+/g)
   if (normMatches) return normMatches[normMatches.length - 1]
-
   return t
 }
 
@@ -57,9 +58,7 @@ app.post('/api/recognize', async (req, res) => {
   const { image, hints, mode } = req.body
   if (!image) return res.status(400).json({ error: 'No image provided' })
 
-  // Keep corrections short so the model doesn't overthink
   const correctionBlock = hints ? `Digit corrections for this user:\n${hints}\n\n` : ''
-
   const promptText = mode === 'number'
     ? `${correctionBlock}What integer is written in this image? It is between 0 and 81.
 Reply with the digits ONLY — no words, no spaces, no punctuation.
@@ -68,17 +67,15 @@ Notes: 7 with a crossbar = 7. Open oval = 0. 6 with long tail = 6.`
     : `${correctionBlock}Handwritten math expression in the image. Return ONLY the LaTeX, nothing else.`
 
   try {
-    const result = await callGroq([
-      {
-        role: 'user',
-        content: [
-          { type: 'image_url', image_url: { url: image } },
-          { type: 'text', text: promptText },
-        ],
-      },
-    ], 'meta-llama/llama-4-scout-17b-16e-instruct')
+    const { mediaType, data } = parseDataUrl(image)
+    const result = await callClaude([{
+      role: 'user',
+      content: [
+        { type: 'image', source: { type: 'base64', media_type: mediaType, data } },
+        { type: 'text', text: promptText },
+      ],
+    }])
 
-    // If model gave a verbose answer, extract the number from it
     const cleaned = mode === 'number'
       ? extractNumber(result)
       : result.trim()
@@ -99,7 +96,6 @@ app.post('/api/check', async (req, res) => {
   const { userAnswer, correctAnswer } = req.body
   if (!userAnswer || !correctAnswer) return res.status(400).json({ error: 'Missing fields' })
 
-  // Strip LaTeX/formatting and compare as plain text
   const strip = (s) => s
     .replace(/\s+/g, '')
     .replace(/^\$\$?/, '').replace(/\$\$?$/, '')
@@ -109,13 +105,11 @@ app.post('/api/check', async (req, res) => {
   const strUser = strip(userAnswer)
   const strCorrect = strip(correctAnswer)
 
-  // Fast path: stripped text match
   if (strUser && strCorrect && strUser === strCorrect) {
     console.log(`Check (strip match): "${userAnswer}" ✓`)
     return res.json({ equivalent: true })
   }
 
-  // Numeric fast path: both parse to the same integer
   const toInt = (s) => parseInt(s.replace(/[^0-9-]/g, ''), 10)
   const intUser = toInt(strUser)
   const intCorrect = toInt(strCorrect)
@@ -124,7 +118,6 @@ app.post('/api/check', async (req, res) => {
     return res.json({ equivalent: true })
   }
 
-  // AI fallback for non-trivial expressions (handles CKE-level high school math)
   try {
     const prompt = `You are a Polish high-school math grader (matura level). Decide if the student's answer is mathematically equivalent to the correct answer.
 
@@ -143,8 +136,7 @@ Rules:
 
 Reply with exactly one word: YES or NO.`
 
-    const text = await callGroq([{ role: 'user', content: prompt }])
-
+    const text = await callClaude([{ role: 'user', content: prompt }])
     console.log(`Check (AI): "${userAnswer}" vs "${correctAnswer}" → "${text.trim()}"`)
     res.json({ equivalent: /yes/i.test(text) })
   } catch (err) {
@@ -158,7 +150,6 @@ app.post('/api/hints', async (req, res) => {
   const { image, taskText, answer, topic } = req.body
   if (!image) return res.status(400).json({ error: 'No image provided' })
 
-  // If image is a local path (/exercises/...), read it from disk as base64
   let imageUrl = image
   if (image.startsWith('/') && !image.startsWith('data:')) {
     const distPath = join(__dirname, '..', 'dist', image)
@@ -195,15 +186,14 @@ Odpowiedz WYŁĄCZNIE w formacie JSON (bez żadnego innego tekstu):
 {"points": <liczba całkowita>, "hints": ["wskazówka 1", "wskazówka 2", ...]}`
 
   try {
-    const result = await callGroq([
-      {
-        role: 'user',
-        content: [
-          { type: 'image_url', image_url: { url: imageUrl } },
-          { type: 'text', text: prompt },
-        ],
-      },
-    ], 'meta-llama/llama-4-scout-17b-16e-instruct', 1024)
+    const { mediaType, data } = parseDataUrl(imageUrl)
+    const result = await callClaude([{
+      role: 'user',
+      content: [
+        { type: 'image', source: { type: 'base64', media_type: mediaType, data } },
+        { type: 'text', text: prompt },
+      ],
+    }], 'claude-haiku-4-5-20251001', 1024)
 
     const jsonMatch = result.match(/\{[\s\S]*\}/)
     if (!jsonMatch) throw new Error('No JSON in response')
