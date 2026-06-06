@@ -26,7 +26,7 @@ function parseDataUrl(dataUrl) {
   return { mediaType: match[1], data: match[2] }
 }
 
-async function callClaude(messages, model = 'claude-haiku-4-5-20251001', maxTokens = 512) {
+async function callClaude(messages, model = 'claude-sonnet-4-6', maxTokens = 512) {
   const response = await fetch(ANTHROPIC_URL, {
     method: 'POST',
     headers: {
@@ -193,7 +193,7 @@ Odpowiedz WYŁĄCZNIE w formacie JSON (bez żadnego innego tekstu):
         { type: 'image', source: { type: 'base64', media_type: mediaType, data } },
         { type: 'text', text: prompt },
       ],
-    }], 'claude-haiku-4-5-20251001', 1024)
+    }], 'claude-sonnet-4-6', 1024)
 
     const jsonMatch = result.match(/\{[\s\S]*\}/)
     if (!jsonMatch) throw new Error('No JSON in response')
